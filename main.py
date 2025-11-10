@@ -9,7 +9,7 @@ app = Flask(__name__)
 # Configuración de SQLAlchemy: Usa una base de datos SQLite en un archivo llamado 'regalos.db'
 # ESTO ES UN ARCHIVO LOCAL Y FUNCIONA SOLO PARA DESARROLLO.
 # Para despliegue en Render, esta línea se cambiaría por una URL de PostgreSQL.
-app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL', 'postgresql://regalos_db_user:pD2iqD0JYeNIMtOrzT1D9AR3RVyI8Lv5@dpg-d4912qh5pdvs73cln8a0-a.oregon-postgres.render.com/regalos_db')
+app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL', 'sqlite:///regalos.db')
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
 
