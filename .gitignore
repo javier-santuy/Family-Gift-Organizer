@@ -1,0 +1,8 @@
+.venv/
+__pycache__/
+*.pyc
+
+# Base de datos local (NO debe subirse)
+regalos.db
+.DS_Store
+.vscode/s

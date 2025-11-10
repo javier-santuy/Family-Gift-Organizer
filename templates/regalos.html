@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Lista de Regalos</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    
+    <style>
+        /* Estados de color para las filas */
+        /* 'Comprado' (Verde Claro) */
+        .estado-comprado {
+            background-color: #D9F7D4; 
+        }
+
+        /* 'Pendiente' (Naranja Claro) */
+        .estado-pendiente {
+            background-color: #FFECC4; 
+        }
+    </style>
+    <script>
+        function aplicarFiltro() {
+            var select = document.getElementById("filtro_persona");
+            var persona = select.value;
+            // Redirige a la misma URL añadiendo el parámetro 'persona'
+            window.location.href = "{{ url_for('ver_regalos') }}" + "?persona=" + encodeURIComponent(persona);
+        }
+        
+        // Script para mostrar/ocultar el formulario de agregar
+        function toggleFormulario() {
+            var form = document.getElementById("formulario_agregar");
+            var boton = document.getElementById("boton_agregar");
+            if (form.style.display === "flex") {
+                form.style.display = "none";
+                boton.textContent = "🎁 Agregar Nuevo Regalo";
+            } else {
+                form.style.display = "flex";
+                boton.textContent = "Ocultar Formulario";
+            }
+        }
+    </script>
+</head>
+<body>
+    <div class="container">
+        <h1>LISTA DE REGALOS</h1>
+        <p>Usuario actual: <b>{{ usuario }}</b>. <br>¡Aquí puedes ver los regalos que se harán a otros, pero no los tuyos!</p><br></p>
+        <p><a href="{{ url_for('logout') }}">Cerrar sesión</a></p>
+        
+        <hr>
+
+        {# --- 1. FILTRO DE PERSONA --- #}
+        <div class="filtro-container">
+            <label for="filtro_persona">Mostrar regalos para:</label>
+            <select id="filtro_persona">
+                <option value="">-- Mostrar Todos --</option>
+                {% for p in participantes %}
+                    <option value="{{ p }}" {% if p == request.args.get('persona') %}selected{% endif %}>{{ p }}</option>
+                {% endfor %}
+            </select>
+            <button onclick="aplicarFiltro()">Aplicar Filtro</button>
+        </div>
+
+        <hr>
+        
+        <h2>Lista de Regalos (Para otros)</h2>
+        <table border="1">
+            <thead>
+                <tr>
+                    <th>Destinatario</th>
+                    <th>Encargado</th>
+                    <th>Regalo</th>
+                    <th>Costo (€)</th>
+                    <th>Estado</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for regalo in regalos %}
+                
+                {# Lógica Jinja: si el estado es 'Comprado', asigna la clase verde; si no, la naranja. #}
+                {% set estado_clase = 'estado-comprado' if regalo.estado == 'Comprado' else 'estado-pendiente' %}
+                <tr class="{{ estado_clase }}">
+                <td>{{ regalo.destinatario }}</td>
+                    <td>{{ regalo.encargado }}</td>
+                    <td>{{ regalo.regalo }}</td>
+                    <td>{{ regalo.costo }}</td>
+                    <td>{{ regalo.estado }}</td>
+                    <td>
+                        {# LA MODIFICACIÓN CRUCIAL: Muestra los botones si el regalo NO es para el usuario actual. #}
+                        {# Dado que la lista 'regalos' ya excluye los regalos para el usuario, esto es una doble seguridad. #}
+                        {% if regalo.destinatario != usuario %} 
+                            <a href="{{ url_for('modificar_regalo', regalo_id=regalo.id) }}">Modificar</a>
+                            |
+                            <form method="POST" action="{{ url_for('borrar_regalo', regalo_id=regalo.id) }}" style="display:inline;">
+                                <button type="submit" onclick="return confirm('¿Estás seguro de que quieres borrar este regalo?')">Borrar</button>
+                            </form>
+                        {% else %}
+                            -
+                        {% endif %}
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <hr>
+
+        {# --- 2. BOTÓN Y FORMULARIO DE AGREGAR --- #}
+        <button id="boton_agregar" onclick="toggleFormulario()">🎁 Agregar Nuevo Regalo</button>
+
+        {# El formulario de adición está oculto inicialmente y usa display:flex para ser horizontal #}
+        <form id="formulario_agregar" method="POST" action="{{ url_for('agregar_regalo') }}" style="display:none;" class="form-inline">
+            <div class="form-group">
+                <label for="destinatario">Destinatario:</label>
+                <select name="destinatario" required>
+                    {% for p in participantes %}
+                        <option value="{{ p }}">{{ p }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="encargado">Encargado:</label>
+                <select name="encargado" required>
+                    {% for p in participantes %}
+                        <option value="{{ p }}" {% if p == usuario %}selected{% endif %}>{{ p }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <label for="regalo">Regalo:</label>
+                <input type="text" name="regalo" placeholder="Descripción del regalo" required>
+            </div>
+
+            <div class="form-group">
+                <label for="costo">Costo (€):</label>
+                <input type="number" name="costo" step="0.01" min="0" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="estado">Estado:</label>
+                <select name="estado" required>
+                    <option value="Pendiente" selected>Pendiente</option>
+                    <option value="Comprado">Comprado</option>
+                    <option value="Envuelto">Envuelto</option>
+                    <option value="Entregado">Entregado</option>
+                </select>
+            </div>
+            
+            <button type="submit" class="submit-button">Añadir</button>
+        </form>
+    </div>
+</body>
+</html>

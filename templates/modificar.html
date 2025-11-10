@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Modificar Regalo</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>Modificar Regalo ID: {{ regalo.id }}</h1>
+
+        <form method="POST">
+            
+            {# Campo para modificar el Destinatario #}
+            <label for="destinatario">Destinatario:</label>
+            <select name="destinatario" required>
+                {% for p in participantes %}
+                    <option value="{{ p }}" {% if p == regalo.destinatario %}selected{% endif %}>{{ p }}</option>
+                {% endfor %}
+            </select><br><br>
+
+            {# Campo para modificar el Encargado #}
+            <label for="encargado">Encargado:</label>
+            <select name="encargado" required>
+                {% for p in participantes %}
+                    <option value="{{ p }}" {% if p == regalo.encargado %}selected{% endif %}>{{ p }}</option>
+                {% endfor %}
+            </select><br><br>
+
+            <label for="regalo">Descripción del Regalo:</label>
+            <input type="text" name="regalo" value="{{ regalo.regalo }}" required><br><br>
+
+            <label for="costo">Costo (estimado €):</label>
+            <input type="number" name="costo" step="0.01" min="0" value="{{ regalo.costo }}" required><br><br>
+
+            <label for="estado">Estado:</label>
+            <select name="estado" required>
+                {# Itera sobre la lista de estados que pasaste desde Python #}
+                {% for estado in estados %}
+                    <option value="{{ estado }}" {% if estado == regalo.estado %}selected{% endif %}>{{ estado }}</option>
+                {% endfor %}
+            </select><br><br>
+            
+            <button type="submit">Guardar Cambios</button>
+        </form>
+
+        <p><a href="{{ url_for('ver_regalos') }}">Cancelar y Volver a la Lista</a></p>
+    </div>
+</body>
+</html>

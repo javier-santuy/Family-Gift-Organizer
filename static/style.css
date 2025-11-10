@@ -1,0 +1,193 @@
+/* --- Estilos Globales y Base --- */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f4f7f6; /* Fondo gris muy claro */
+    color: #333;
+    margin: 0;
+    padding: 20px;
+    line-height: 1.6;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.container {
+    background-color: #ffffff;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    max-width: 900px;
+    width: 100%;
+    margin-top: 20px;
+}
+
+h1, h2 {
+    color: #007bff; /* Azul corporativo */
+    border-bottom: 2px solid #eee;
+    padding-bottom: 10px;
+    margin-top: 0;
+}
+
+hr {
+    border: none;
+    border-top: 1px solid #ddd;
+    margin: 20px 0;
+}
+
+/* --- Estilos de Tablas y Datos --- */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+}
+
+th, td {
+    border: 1px solid #ddd;
+    padding: 12px 15px;
+    text-align: left;
+}
+
+th {
+    background-color: #007bff;
+    color: white;
+    font-weight: 600;
+}
+
+tr:nth-child(even) {
+    background-color: #f9f9f9; /* Rayado sutil */
+}
+
+/* --- Estilos de Formularios y Botones --- */
+form {
+    margin-bottom: 20px;
+    padding: 15px;
+    border: 1px solid #e0e0e0;
+    border-radius: 5px;
+}
+
+label {
+    display: block;
+    margin-top: 10px;
+    font-weight: 600;
+    margin-bottom: 5px;
+}
+
+input[type="text"], 
+input[type="number"], 
+select {
+    width: calc(100% - 22px);
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box; /* Incluye padding y borde en el ancho total */
+}
+
+button, .button-link {
+    background-color: #28a745; /* Botón principal (verde) */
+    color: white;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1em;
+    transition: background-color 0.3s ease;
+    text-decoration: none;
+    display: inline-block;
+}
+
+button:hover, .button-link:hover {
+    background-color: #1e7e34;
+}
+
+/* Estilo para los botones de acción en la tabla (Modificar, Borrar) */
+td form button {
+    background-color: #dc3545; /* Rojo para Borrar */
+    padding: 5px 10px;
+    font-size: 0.85em;
+}
+
+td form button:hover {
+    background-color: #c82333;
+}
+
+td a {
+    color: #007bff;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+td a:hover {
+    text-decoration: underline;
+}
+
+/* Estilo específico para el login */
+.login-form {
+    text-align: center;
+}
+
+.login-form select {
+    width: 60%;
+    max-width: 300px;
+    display: inline-block;
+}
+
+.login-form button {
+    background-color: #007bff;
+    margin-left: 10px;
+}
+
+.login-form button:hover {
+    background-color: #0056b3;
+}
+
+/* --- Estilos para Filtros y Formularios Horizontales (Form-Inline) --- */
+
+.filtro-container {
+    display: flex;
+    gap: 15px; /* Espacio entre los elementos del filtro */
+    align-items: center;
+    padding: 10px;
+    background-color: #e9ecef;
+    border-radius: 5px;
+}
+
+.filtro-container label {
+    font-weight: bold;
+    margin: 0;
+}
+
+.filtro-container select {
+    width: auto; /* Ancho automático para no ocupar todo */
+    margin: 0;
+}
+
+/* Estilo para el formulario de agregar horizontal */
+.form-inline {
+    display: flex;
+    flex-wrap: wrap; /* Permite que los elementos pasen a la siguiente línea en pantallas pequeñas */
+    gap: 10px;
+    align-items: flex-end; /* Alinea los elementos a la parte inferior (botón y selectores) */
+    border: 2px dashed #007bff; /* Borde visible cuando el formulario está abierto */
+    background-color: #f8f9fa;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1; /* Permite que los grupos crezcan para llenar el espacio */
+    min-width: 120px; /* Ancho mínimo para cada campo */
+}
+
+.form-group input, 
+.form-group select {
+    width: 100%;
+    margin-bottom: 0; /* Elimina el margen inferior estándar */
+}
+
+/* Ajuste específico para el botón de añadir */
+.form-inline .submit-button {
+    background-color: #007bff;
+    height: 40px; /* Para alinear con la altura de los campos */
+    margin-bottom: 0;
+}
